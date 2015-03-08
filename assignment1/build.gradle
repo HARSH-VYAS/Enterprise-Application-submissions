@@ -17,7 +17,7 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
 jar {
-    baseName = 'myvote'
+    baseName = 'hello'
     version =  '0.1.0'
 }
 
@@ -36,7 +36,7 @@ dependencies {
     compile("org.scala-lang:scala-library:2.11.5")
     compile("org.webjars:bootstrap:3.1.1")
     testCompile("junit:junit")
-     compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-security")
 }
 
 task wrapper(type: Wrapper) {

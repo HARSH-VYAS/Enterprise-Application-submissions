@@ -33,9 +33,10 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 	
 	Moderator mod = new Moderator();
 	Polls poll = new Polls();
+	
 	ArrayList <Moderator> stringlist = new ArrayList<Moderator>();
 	ArrayList <Polls> stringlist1 = new ArrayList<Polls>();
-	
+
 	private static final AtomicLong counter = new AtomicLong(123455);
 	
      int [] tempresult = new int[2];
@@ -49,8 +50,9 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/api/v1/").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/v1/moderator/*").permitAll()
                 .antMatchers("/api/v1/polls/*").permitAll()
-                .antMatchers("/api/v1/moderators/*").fullyAuthenticated().anyRequest().hasRole("USER");
+                .antMatchers("/api/v1/moderator/*").fullyAuthenticated().anyRequest().hasRole("USER");
             }
          
          @Autowired
@@ -87,9 +89,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 		{
 			if(id == stringlist.get(i).getId())
 			{
-			
 				identifier=i;
-				
 			}
 		}
 		
@@ -125,17 +125,16 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 
 	public ResponseEntity <Polls> createPoll(@Valid @RequestBody Polls poll,@PathVariable int id) {
 		
+    	poll.setId(Integer.toString((int) counter.incrementAndGet(),36));
+    	stringlist1.add(poll);
+    
     	
-
-		poll.setId(Integer.toString((int) counter.incrementAndGet(),36));
-		stringlist1.add(poll);
-	
 		for(int i=0;i<stringlist.size();i++)
 		{
 			if(id == stringlist.get(i).getId())
 			{
-				stringlist.get(i).setPollslist(stringlist1);
-				
+				stringlist.get(i).getPollslist().add(poll);
+		
 			}
 			
 		}
@@ -245,18 +244,19 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 			   
 				  	if(choice_index == 0)
 				  		{
-				  		tempresult=stringlist1.get(i).getResult();
-				  		tempresult[choice_index]=tempresult[choice_index]+1;
 				  		
+				  		tempresult=stringlist1.get(i).getResult();
+				  		tempresult[choice_index]=tempresult[choice_index]+1;	
 				  		stringlist1.get(i).setResult(tempresult);
 				  	 	return new ResponseEntity(HttpStatus.NO_CONTENT);
+				  		
 				  		}
 				  	else if(choice_index==1)
 		            {
 				  		 tempresult=stringlist1.get(i).getResult();
 				  		 tempresult[choice_index]=tempresult[choice_index]+1;
-						  stringlist1.get(i).setResult(tempresult);
-						 	return new ResponseEntity(HttpStatus.NO_CONTENT);
+						 stringlist1.get(i).setResult(tempresult);
+						 return new ResponseEntity(HttpStatus.NO_CONTENT);
 		            }
 				  	
     		    }

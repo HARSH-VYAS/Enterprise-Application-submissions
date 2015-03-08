@@ -33,6 +33,7 @@ public class Moderator {
 	   
 	   
 	   ArrayList <Polls> pollslist = new ArrayList<Polls>();
+	   
 	   public ArrayList<Polls> getPollslist() {
 		return pollslist;
 	}
