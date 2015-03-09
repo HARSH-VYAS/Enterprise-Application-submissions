@@ -50,9 +50,9 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/api/v1/").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/v1/moderator/*").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/v1/moderators/*").permitAll()
                 .antMatchers("/api/v1/polls/*").permitAll()
-                .antMatchers("/api/v1/moderator/*").fullyAuthenticated().anyRequest().hasRole("USER");
+                .antMatchers("/api/v1/moderators/*").fullyAuthenticated().anyRequest().hasRole("USER");
             }
 
          @Autowired
@@ -65,12 +65,12 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
     
     
     
-	@RequestMapping(value = "/moderator/", method = RequestMethod.POST)
+	@RequestMapping(value = "/moderators", method = RequestMethod.POST)
 	
 	public ResponseEntity <Moderator> moderator(@Valid @RequestBody Moderator mod) {
 		
 		String date = new Date().toString();	
-		mod.setCreated_at(date);///new date ().Simpledateformat (yyyy/m/t/h/m/s/z);
+		mod.setCreated_at(date);
 		mod.setId((int)counter.incrementAndGet());
 		stringlist.add(mod);
 		
@@ -78,8 +78,8 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 		
 	   }
 
-	@RequestMapping(value = "/moderator/{id}", method = RequestMethod.GET)
-		public ResponseEntity <Moderator> Viewmoderator(@PathVariable int id) {
+	@RequestMapping(value = "/moderators/{moderator_id}", method = RequestMethod.GET)
+		public ResponseEntity <Moderator> Viewmoderator(@PathVariable int moderator_id) {
 	
 		int identifier = 0;
 		
@@ -87,7 +87,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 		
 		for(int i=0;i<stringlist.size();i++)
 		{
-			if(id == stringlist.get(i).getId())
+			if(moderator_id == stringlist.get(i).getId())
 			{
 				identifier=i;
 			}
@@ -97,7 +97,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 	   
 	}
 	
-	@RequestMapping(value = "/moderator/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/moderators/{id}", method = RequestMethod.PUT)
 	 public ResponseEntity <Moderator> updatemoderator(@Valid @RequestBody Moderator mod,@PathVariable int id) {
 		
          int identifier = 0;
@@ -121,9 +121,9 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 		return new ResponseEntity<Moderator>(stringlist.get(identifier),HttpStatus.CREATED);
 	   }
 	
-    @RequestMapping(value = "/moderator/{id}/polls", method = RequestMethod.POST)
+    @RequestMapping(value = "/moderators/{moderator_id}/polls", method = RequestMethod.POST)
 
-	public ResponseEntity <Polls> createPoll(@Valid @RequestBody Polls poll,@PathVariable int id) {
+	public ResponseEntity <Polls> createPoll(@Valid @RequestBody Polls poll,@PathVariable int moderator_id) {
 		
     	poll.setId(Integer.toString((int) counter.incrementAndGet(),36));
     	
@@ -132,7 +132,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
     	
 		for(int i=0;i<stringlist.size();i++)
 		{
-			if(id == stringlist.get(i).getId())
+			if(moderator_id == stringlist.get(i).getId())
 			{
 				stringlist.get(i).getPollslist().add(poll);
 		
@@ -143,10 +143,28 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 		return new ResponseEntity<Polls>(poll,HttpStatus.CREATED);
 		
 	   }
+    /*
+     * 
+     * 
+       
+        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/moderators [Update] Call failed",
+       
+        
+        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/polls/{poll_id} [DELETE] Poll Call failed",
+        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/moderators/{moderator_id}/polls [Create] Preparation for List Call failed",
+        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/moderators/{moderator_id}/polls [Create] Preparation for List Call failed",
+        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/polls/{poll_id}?choice=x [PUT] Vote Call failed",
+        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/moderators [POST] Validation Check Call failed"
+    ]
+     */
+    
+    
+    
+    
 
-	@RequestMapping(value = "/polls/{id1}", method = RequestMethod.GET)
+	@RequestMapping(value = "/polls/{poll_id}", method = RequestMethod.GET)
 		
-	    public ResponseEntity <Polls> viewPollsWithoughResult(@PathVariable String id1) {
+	    public ResponseEntity <Polls> viewPollsWithoughResult(@PathVariable String poll_id) {
 	
 		int identifier = 0;
 		
@@ -154,7 +172,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 		
 		for(int i=0; i<stringlist1.size(); i++)
 		{
-			if(id1.equals(stringlist1.get(i).getId()))
+			if(poll_id.equals(stringlist1.get(i).getId()))
 			{
 				identifier=i;
 			}
@@ -163,20 +181,20 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 		return new ResponseEntity<Polls>(stringlist1.get(identifier),HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/moderator/{id}/polls/{id1}", method = RequestMethod.GET)
-	public ResponseEntity viewPollWithResult(@PathVariable int id,@PathVariable String id1) {
+	@RequestMapping(value = "/moderators/{moderator_id}/polls/{poll_id}", method = RequestMethod.GET)
+	public ResponseEntity viewPollWithResult(@PathVariable int moderator_id,@PathVariable String poll_id) {
 
     int identifier = 0;
 	System.out.println("size is"+stringlist.size());
 	
 	for(int i=0;i<stringlist.size();i++)
 	{
-		if(id == stringlist.get(i).getId())
+		if(moderator_id == stringlist.get(i).getId())
 		{
 		
 			for(int j=0;j<stringlist1.size();j++)
 			{
-				if(id1.equals(stringlist1.get(j).getId()))	
+				if(poll_id.equals(stringlist1.get(j).getId()))	
 				{
 					return new ResponseEntity(stringlist.get(i).getPollslist().get(j),HttpStatus.OK);
 				}
@@ -188,15 +206,15 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
      return new ResponseEntity("View Polls is not sucessfull",HttpStatus.OK);
 }
 
-	@RequestMapping(value = "/moderator/{id}/polls", method = RequestMethod.GET)
-	public ResponseEntity listAllPolls(@PathVariable int id) {
+	@RequestMapping(value = "/moderators/{moderator_id}/polls", method = RequestMethod.GET)
+	public ResponseEntity listAllPolls(@PathVariable int moderator_id) {
 
     int identifier = 0;
 	System.out.println("size is"+stringlist.size());
 	
 	for(int i=0;i<stringlist.size();i++)
 	{
-		if(id == stringlist.get(i).getId())
+		if(moderator_id == stringlist.get(i).getId())
 		{
 		
 					return new ResponseEntity(stringlist.get(i).getPollslist(),HttpStatus.OK);
@@ -207,20 +225,20 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 
 	
 	
-	@RequestMapping(value = "/moderator/{id}/polls/{id1}", method = RequestMethod.DELETE)
-	public ResponseEntity deletePoll(@PathVariable int id,@PathVariable String id1) {
+	@RequestMapping(value = "/moderators/{moderator_id}/polls/{poll_id}", method = RequestMethod.DELETE)
+	public ResponseEntity deletePoll(@PathVariable int moderator_id,@PathVariable String poll_id) {
 
     int identifier = 0;
 	System.out.println("size is"+stringlist.size());
 	
 	for(int i=0;i<stringlist.size();i++)
 	{
-		if(id == stringlist.get(i).getId())
+		if(moderator_id == stringlist.get(i).getId())
 		{
 		
 			for(int j=0;j<stringlist1.size();j++)
 			{
-				if(id1.equals(stringlist1.get(j).getId()))	
+				if(poll_id.equals(stringlist1.get(j).getId()))	
 				{
 					stringlist1.remove(j);
 					return new ResponseEntity(stringlist.get(i).getPollslist(),HttpStatus.NO_CONTENT);
@@ -235,12 +253,12 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 
 	
 	
-	 @RequestMapping(value = "/polls/{id1}", method = RequestMethod.PUT)
-	 public ResponseEntity voteAPoll(@PathVariable String id1,@RequestParam(value="choice")int choice_index) 
+	 @RequestMapping(value = "/polls/{poll_id}", method = RequestMethod.PUT)
+	 public ResponseEntity voteAPoll(@PathVariable String poll_id,@RequestParam(value="choice")int choice_index) 
 	 {
 		 for(int i=0;i<stringlist1.size();i++)
 		    {
-			  if(id1.equals(stringlist1.get(i).getId()))
+			  if(poll_id.equals(stringlist1.get(i).getId()))
 			  {
 			   
 				  	if(choice_index == 0)
