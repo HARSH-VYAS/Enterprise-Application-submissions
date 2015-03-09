@@ -1,4 +1,5 @@
 package hello;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -38,6 +39,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 	ArrayList <Polls> stringlist1 = new ArrayList<Polls>();
 
 	private static final AtomicLong counter = new AtomicLong(123455);
+	private SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 	
      int [] tempresult = new int[2];
      int [] result = new int[2];
@@ -49,7 +51,6 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
                 .httpBasic().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/api/v1/").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/v1/moderators").permitAll()
                 .antMatchers("/api/v1/polls/**").permitAll()
                 .antMatchers("/api/v1/moderators/**").fullyAuthenticated().anyRequest().hasRole("USER");
@@ -70,7 +71,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 	public ResponseEntity <Moderator> moderator(@Valid @RequestBody Moderator mod) {
 		
 		String date = new Date().toString();	
-		mod.setCreated_at(date);
+		mod.setCreated_at(formater.format(new Date()));
 		mod.setId((int)counter.incrementAndGet());
 		stringlist.add(mod);
 		
@@ -143,24 +144,8 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 		return new ResponseEntity<Polls>(poll,HttpStatus.CREATED);
 		
 	   }
-    /*
-     * 
-     * 
-       
-        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/moderators [Update] Call failed",
-       
-        
-        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/polls/{poll_id} [DELETE] Poll Call failed",
-        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/moderators/{moderator_id}/polls [Create] Preparation for List Call failed",
-        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/moderators/{moderator_id}/polls [Create] Preparation for List Call failed",
-        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/polls/{poll_id}?choice=x [PUT] Vote Call failed",
-        "http://ec2-54-153-100-62.us-west-1.compute.amazonaws.com:8080/api/v1/moderators [POST] Validation Check Call failed"
-    ]
-     */
-    
-    
-    
-    
+   
+  
 
 	@RequestMapping(value = "/polls/{poll_id}", method = RequestMethod.GET)
 		
