@@ -6,6 +6,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 public class Moderator {
@@ -16,6 +18,7 @@ public class Moderator {
 	*/
 	
 	   private int id;
+	   @JsonIgnore
 	   private String [] polls;
 	  
 	    @NotNull(message="Name should not be Null\n")
@@ -32,7 +35,7 @@ public class Moderator {
 	    
 	   private String created_at;
 	   
-	   
+	   @JsonIgnore
 	   ArrayList <Polls> pollslist = new ArrayList<Polls>();
 	   
 	   public ArrayList<Polls> getPollslist() {

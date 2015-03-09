@@ -1,13 +1,14 @@
 package hello;
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Polls {
 	
 	String id,question,started_at,expired_at;
 	String [] choice= new String[2];
-	int [] result= new int[2];
 
-	
+	int [] result= new int[2];
 	public Polls() {
 		super();
 		// TODO Auto-generated constructor stub

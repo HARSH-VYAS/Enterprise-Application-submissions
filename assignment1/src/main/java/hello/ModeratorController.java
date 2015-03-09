@@ -50,9 +50,9 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/api/v1/").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/v1/moderators/*").permitAll()
-                .antMatchers("/api/v1/polls/*").permitAll()
-                .antMatchers("/api/v1/moderators/*").fullyAuthenticated().anyRequest().hasRole("USER");
+                .antMatchers(HttpMethod.POST,"/api/v1/moderators").permitAll()
+                .antMatchers("/api/v1/polls/**").permitAll()
+                .antMatchers("/api/v1/moderators/**").fullyAuthenticated().anyRequest().hasRole("USER");
             }
 
          @Autowired
@@ -118,7 +118,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 			}
 			
 		}
-		return new ResponseEntity<Moderator>(stringlist.get(identifier),HttpStatus.CREATED);
+		return new ResponseEntity<Moderator>(stringlist.get(identifier),HttpStatus.OK);
 	   }
 	
     @RequestMapping(value = "/moderators/{moderator_id}/polls", method = RequestMethod.POST)
