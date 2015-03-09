@@ -78,8 +78,8 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 		
 	   }
 
-	@RequestMapping(value = "/moderators/{moderator_id}", method = RequestMethod.GET)
-		public ResponseEntity <Moderator> Viewmoderator(@PathVariable int moderator_id) {
+	@RequestMapping(value = "/moderators/{id}", method = RequestMethod.GET)
+		public ResponseEntity <Moderator> Viewmoderator(@PathVariable int id) {
 	
 		int identifier = 0;
 		
@@ -87,7 +87,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 		
 		for(int i=0;i<stringlist.size();i++)
 		{
-			if(moderator_id == stringlist.get(i).getId())
+			if(id == stringlist.get(i).getId())
 			{
 				identifier=i;
 			}
