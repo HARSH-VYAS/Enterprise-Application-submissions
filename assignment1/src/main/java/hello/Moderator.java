@@ -16,7 +16,7 @@ public class Moderator {
 	 "email": "John.Smith@Gmail.com",
 	 "password": "secret"
 	*/
-	
+	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 	   private int id;
 	   @JsonIgnore
 	   private String [] polls;
