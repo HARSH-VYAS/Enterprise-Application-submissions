@@ -54,7 +54,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/polls/*").permitAll()
                 .antMatchers("/api/v1/moderator/*").fullyAuthenticated().anyRequest().hasRole("USER");
             }
-         
+
          @Autowired
             public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
                 auth
@@ -70,7 +70,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 	public ResponseEntity <Moderator> moderator(@Valid @RequestBody Moderator mod) {
 		
 		String date = new Date().toString();	
-		mod.setCreated_at(date);
+		mod.setCreated_at(date);///new date ().Simpledateformat (yyyy/m/t/h/m/s/z);
 		mod.setId((int)counter.incrementAndGet());
 		stringlist.add(mod);
 		
@@ -126,6 +126,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 	public ResponseEntity <Polls> createPoll(@Valid @RequestBody Polls poll,@PathVariable int id) {
 		
     	poll.setId(Integer.toString((int) counter.incrementAndGet(),36));
+    	
     	stringlist1.add(poll);
     
     	

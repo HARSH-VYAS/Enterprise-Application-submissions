@@ -1,4 +1,5 @@
 package hello;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.validation.constraints.NotNull;
@@ -50,10 +51,12 @@ public class Moderator {
 		this.polls = polls;
 	}
 	public String getCreated_at() {
-		return created_at;
+		
+		 return created_at;
 	}
 	public void setCreated_at(String created_at) {
 		this.created_at = created_at;
+	
 	}
 	public Moderator(String name, String email, String password) {
 		super();
