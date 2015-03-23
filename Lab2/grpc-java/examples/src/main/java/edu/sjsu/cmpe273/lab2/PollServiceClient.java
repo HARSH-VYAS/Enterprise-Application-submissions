@@ -62,7 +62,7 @@ public class PollServiceClient {
       String expireAt = "2015-02-24T13:00:00.000Z";
       String [] choice  = {"Android","iphone"};
 
-      PollServiceClient client = new PollServiceClient("localhost", 50051);
+      PollServiceClient client = new PollServiceClient("54.153.100.62", 50051);
     try {
       	client.poll(moderatorId,question,startedAt,expireAt,choice);
           } finally {
