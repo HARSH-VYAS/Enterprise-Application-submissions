@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 @Repository
 @EnableWebMvcSecurity
 @RequestMapping(value="/api/v1")
@@ -46,6 +47,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 	ArrayList <Moderator> stringlist = new ArrayList<Moderator>();
 
 	ArrayList<String> strlst = new ArrayList<String>();
+	ArrayList<Integer> strlst1 = new ArrayList<Integer>();
 	private static final AtomicLong counter = new AtomicLong(123455);
 	private SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 	
@@ -77,8 +79,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 		System.out.println(mod.getName());
 		String date = new Date().toString();	
 		mod.setCreated_at(formater.format(new Date()));
-		mod.setId((int)counter.incrementAndGet());
-		stringlist.add(mod);
+		mod.setId((int)counter.incrementAndGet());stringlist.add(mod);
 		modr.save(mod);
 		return new ResponseEntity<Moderator>(mod,HttpStatus.CREATED);
 		
@@ -114,10 +115,14 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
     @RequestMapping(value = "/moderators/{moderator_id}/polls", method = RequestMethod.POST)
 	public ResponseEntity createPoll(@Valid @RequestBody Polls poll,@PathVariable int moderator_id) {
 		
-    	poll.setId(Integer.toString((int) counter.incrementAndGet(),36));
-		pollr.save(poll);
+    	poll.setId(Integer.toString((int) counter.incrementAndGet(), 36));
+		poll.setStarted_at(formater.format(new Date()));
+		poll.setExpired_at(formater.format(new Date(new Date().getTime() + (long) 24 * 3600)));
+		//strlst1.add(moderator_id);
+		//poll.setModeratorList(strlst1);
 		m = modr.findById(moderator_id);
 		strlst = m.getPollslist();
+		pollr.save(poll);
 		strlst.add(poll.getId());
 		m.setPollslist(strlst);
 		modr.save(m);
@@ -169,8 +174,6 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
 
 	@RequestMapping(value = "/moderators/{moderator_id}/polls/{poll_id}", method = RequestMethod.DELETE)
 	public ResponseEntity deletePoll(@PathVariable int moderator_id,@PathVariable String poll_id) {
-
-
  		p=pollr.findById(poll_id);
 		pollr.delete(p);
 

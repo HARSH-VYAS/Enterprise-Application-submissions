@@ -8,29 +8,38 @@ public class Polls {
 	@Id
 	String id;
 
-    String question,started_at,expired_at;
+	String question,started_at,expired_at;
 	String [] choice= new String[2];
 
+//	@JsonIgnore
+//	ArrayList <Integer> moderatorList = new ArrayList<Integer>();
+
+
 	int [] result= new int[2];
-	public Polls() {
-		super();
-		// TODO Auto-generated constructor stub
+	public Polls(){
+
 	}
-	public Polls(String id, String question, String started_at,
-			String expired_at, String[] choice) {
+
+	public Polls(String id, String question, String started_at, String expired_at, String[] choice,int[] result) {
+
 		super();
 		this.id = id;
 		this.question = question;
 		this.started_at = started_at;
 		this.expired_at = expired_at;
 		this.choice = choice;
+		//this.moderatorList = moderatorList;
+		this.result = result;
 	}
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
+
 	public String getQuestion() {
 		return question;
 	}
@@ -61,7 +70,13 @@ public class Polls {
 	public void setResult(int[] result) {
 		this.result = result;
 	}
-	
+	/*public ArrayList<Integer> getModeratorList() {
+		return moderatorList;
+	}
+
+	public void setModeratorList(ArrayList<Integer> moderatorList) {
+		this.moderatorList = moderatorList;
+	}*/
 		
 
 }
