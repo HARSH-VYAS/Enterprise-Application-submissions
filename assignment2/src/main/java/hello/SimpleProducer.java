@@ -27,12 +27,12 @@ public class SimpleProducer {
         producer = new Producer<>(new ProducerConfig(properties));
     }
 
-    public void  callProducer(String [] choice, int [] result )
+    public void  callProducer(String [] choice, int [] result,String email)
     {
         new SimpleProducer();
      //   for (Integer i : mod) {
             String topic = "cmpe273-topic";
-            String msg = "harshvyas1214@gmail.com" + ":010095410:pollresult:[" + choice[0] + "=" + result[0] + "and" + choice[1] + "=" + result[1] + "]";
+            String msg = email + ":010095410:pollresult:[" + choice[0] + "=" + result[0] + "," + choice[1] + "=" + result[1] + "]";
             System.out.println(msg + topic);
             KeyedMessage<Integer, String> data = new KeyedMessage<>(topic, msg);
             producer.send(data);

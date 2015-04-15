@@ -26,7 +26,7 @@ public class ScheduledTasks {
     String [] choice = new String[10];
     int [] result = new int [10];
     ArrayList<Polls> poll = new ArrayList<Polls>();
-    ArrayList<Integer> mod = new ArrayList<Integer>();
+    List<Moderator> mod;
     List<Polls> po;
     Date sysdate,expdate;
 
@@ -36,20 +36,30 @@ public class ScheduledTasks {
                try {
                  expdate= formater.parse(p.getExpired_at());
                  sysdate= formater.parse(formater.format(new Date()));
+                   mod=mr.findAll();
+                 for(int i =0 ; i<mr.findAll().size();i++)
+                 {
+                     for (int j=0;j<mod.get(i).getPollslist().size();j++) {
+                         if (p.getId().equals(mod.get(i).getPollslist().get(j))){
+
+                             Moderator moderator = mod.get(i);
+                             if(sysdate.after(expdate)) {
+
+                                 choice=p.getChoice();
+                                 result=p.getResult();
+                                 sp.callProducer(choice,result,moderator.getEmail());
+
+                             }
+                         }
+                     }
+                 }
+
+
                } catch (ParseException e) {
                  e.printStackTrace();
              }
 
-             if(sysdate.after(expdate)) {
 
-                 choice=p.getChoice();
-                 result=p.getResult();
-
-               //  mod=p.getModeratorList();
-
-                 sp.callProducer(choice,result);
-
-             }
          }
 
     }
