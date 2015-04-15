@@ -29,10 +29,10 @@ public class SimpleProducer {
 
     public void  callProducer(String [] choice, int [] result,String email)
     {
-        new SimpleProducer();
+          new SimpleProducer();
      //   for (Integer i : mod) {
             String topic = "cmpe273-topic";
-            String msg = email + ":010095410:pollresult:[" + choice[0] + "=" + result[0] + "," + choice[1] + "=" + result[1] + "]";
+            String msg = email + ":010095410:Poll Result:[" + choice[0] + "=" + result[0] + "," + choice[1] + "=" + result[1] + "]";
             System.out.println(msg + topic);
             KeyedMessage<Integer, String> data = new KeyedMessage<>(topic, msg);
             producer.send(data);
