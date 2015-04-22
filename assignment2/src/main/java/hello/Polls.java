@@ -11,7 +11,17 @@ public class Polls {
 	String question,started_at,expired_at;
 	String [] choice= new String[2];
 
-//	@JsonIgnore
+	@JsonIgnore
+	int flag;
+
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
+	//	@JsonIgnore
 //	ArrayList <Integer> moderatorList = new ArrayList<Integer>();
 
 
@@ -30,6 +40,7 @@ public class Polls {
 		this.choice = choice;
 		//this.moderatorList = moderatorList;
 		this.result = result;
+		this.flag=0;
 	}
 
 	public String getId() {

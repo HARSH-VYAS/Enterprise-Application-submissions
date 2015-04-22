@@ -118,6 +118,7 @@ public class ModeratorController extends WebSecurityConfigurerAdapter {
     	poll.setId(Integer.toString((int) counter.incrementAndGet(), 36));
 		poll.setStarted_at(formater.format(new Date()));
 		poll.setExpired_at(formater.format(new Date(new Date().getTime() + (long) 24 * 3600)));
+		poll.setFlag(poll.getFlag());
 		//strlst1.add(moderator_id);
 		//poll.setModeratorList(strlst1);
 		m = modr.findById(moderator_id);

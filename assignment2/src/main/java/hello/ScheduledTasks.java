@@ -29,6 +29,7 @@ public class ScheduledTasks {
     List<Moderator> mod;
     List<Polls> po;
     Date sysdate,expdate;
+    static int flag =0;
 
     @Scheduled(fixedRate = 5000)
     public void reportCurrentTime(){
@@ -43,17 +44,19 @@ public class ScheduledTasks {
                          if (p.getId().equals(mod.get(i).getPollslist().get(j))){
 
                              Moderator moderator = mod.get(i);
-                             if(sysdate.after(expdate)) {
-
+                             if(sysdate.after(expdate) && p.getFlag()==0) {
                                  choice=p.getChoice();
                                  result=p.getResult();
+                                 p.setFlag(1);
+                                 pr.save(p);
+                                 System.out.println("Flag is :" + flag +"\n\n");
                                  sp.callProducer(choice,result,moderator.getEmail());
+
 
                              }
                          }
                      }
                  }
-
 
                } catch (ParseException e) {
                  e.printStackTrace();
